@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const Myapp());
 }
+
+const nanum = 'NanumMyeongjo';
 
 class Myapp extends StatefulWidget {
   const Myapp({super.key});
@@ -12,20 +15,14 @@ class Myapp extends StatefulWidget {
 }
 
 class _MyappState extends State<Myapp> {
-
   // 달 이미지를 만드는 함수
   Widget moon({double top = 0, double left = 0}) {
     return Positioned(
       top: top,
       left: left,
-      child: Image.asset(
-        'assets/moon.png',
-        width: 150,
-        height: 150,
-      ),
+      child: Image.asset('assets/moon.png', width: 150, height: 150),
     );
   }
-
 
   Widget cloud({
     double top = 0,
@@ -41,23 +38,15 @@ class _MyappState extends State<Myapp> {
         tween: Tween(begin: 0.0, end: 1.0),
         duration: const Duration(seconds: 2),
         builder: (context, value, child) {
-          return Opacity(
-            opacity: value,
-            child: child,
-          );
+          return Opacity(opacity: value, child: child);
         },
         child: Transform.rotate(
           angle: angle, // 회전 각도
-          child: Image.asset(
-            'assets/cloud.png',
-            width: width,
-            height: height,
-          ),
+          child: Image.asset('assets/cloud.png', width: width, height: height),
         ),
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +58,6 @@ class _MyappState extends State<Myapp> {
     // 화면 세로 길이
     final screenHeight = screenSize.height;
 
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -80,10 +68,7 @@ class _MyappState extends State<Myapp> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Color(0xff381361),
-                Color(0xff2B0A42),
-              ],
+              colors: [Color(0xff381361), Color(0xff2B0A42)],
               stops: [0.1, 0.85],
             ),
           ),
@@ -91,17 +76,9 @@ class _MyappState extends State<Myapp> {
             children: [
               moon(),
               cloud(height: 220, width: 270, top: 620, left: 150),
-              cloud(height: 220,
-                  width: 200,
-                  top: 620,
-                  left: -25,
-                  angle: 0.2),
+              cloud(height: 220, width: 200, top: 620, left: -25, angle: 0.2),
               cloud(height: 220, width: 260, top: 650, left: 210),
-              cloud(height: 240,
-                  width: 240,
-                  top: 680,
-                  left: -25,
-                  angle: 0.2),
+              cloud(height: 240, width: 240, top: 680, left: -25, angle: 0.2),
               cloud(height: 210, width: 250, top: 710, left: 130),
 
               Positioned(
@@ -134,20 +111,61 @@ class _MyappState extends State<Myapp> {
                       offset: Offset(0, -40),
                       child: Text(
                         '운명을 엿볼 시간이에요.',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontFamily: 'NanumMyeongjo',
-                        ),
+                        style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
+                    SizedBox(height: 50),
                   ],
-                )
+                ),
+              ),
+              Positioned(
+                top: 500,
+                child: Container(
+                  width: 160,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0xff926F8D), Color(0xff3B1568)],
+                      stops: [0.1, 0.8],
+                    ),
+                    borderRadius: BorderRadiusGeometry.circular(30),
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadiusGeometry.circular(30),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('시작하기', style: TextStyle(color: Colors.white,fontSize: 16)),
+                        SizedBox(width: 8),
+                        Transform.flip(
+                          flipX: true,
+                          child: SvgPicture.asset(
+                            'assets/icons/arrow.svg',
+                            height: 20,
+                            width: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
         ),
       ),
+      theme: ThemeData(fontFamily: nanum),
     );
   }
 }
