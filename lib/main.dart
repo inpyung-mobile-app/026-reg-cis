@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:test_1/pages/name_page.dart';
 
 void main() {
-  runApp(const Myapp());
+  runApp(Myapp());
 }
-
-const nanum = 'NanumMyeongjo';
 
 class Myapp extends StatefulWidget {
   const Myapp({super.key});
@@ -15,34 +14,64 @@ class Myapp extends StatefulWidget {
 }
 
 class _MyappState extends State<Myapp> {
-  // 달 이미지를 만드는 함수
-  Widget moon({double top = 0, double left = 0}) {
-    return Positioned(
-      top: top,
-      left: left,
-      child: Image.asset('assets/moon.png', width: 150, height: 150),
-    );
+  bool moon = false;
+  bool clouds = false;
+  bool DailyTarot = false;
+  bool graphic = false;
+  bool text1 = false;
+  bool better = false;
+  int pageIndex = 0;
+
+  // 시작할 때 한번 호출되는 함수
+  // 초기값, 시작 부분 담당
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      //달
+      await Future.delayed(Duration(milliseconds: 1000));
+      moon = true;
+      setState(() {});
+      //구름
+      await Future.delayed(const Duration(milliseconds: 600));
+      clouds = true;
+      if (!mounted) return;
+      setState(() {});
+      //데일리 타로 로고
+      await Future.delayed(Duration(milliseconds: 700));
+      DailyTarot = true;
+      setState(() {});
+      //작은 문양
+      await Future.delayed(Duration(milliseconds: 300));
+      graphic = true;
+      setState(() {});
+      //텍스트
+      await Future.delayed(Duration(milliseconds: 500));
+      text1 = true;
+      setState(() {});
+      //시작하기 버튼
+      await Future.delayed(Duration(milliseconds: 500));
+      better = true;
+      setState(() {});
+    });
   }
 
-  Widget cloud({
-    double top = 0,
-    double left = 0,
-    double width = 100,
-    double height = 100,
-    double angle = 0,
+  Widget cloud(
+    double left,
+    double bottom, {
+    bool flip = false,
+    double width = 70,
   }) {
+    // 구름 함수
     return Positioned(
-      top: top,
       left: left,
-      child: TweenAnimationBuilder<double>(
-        tween: Tween(begin: 0.0, end: 1.0),
-        duration: const Duration(seconds: 2),
-        builder: (context, value, child) {
-          return Opacity(opacity: value, child: child);
-        },
-        child: Transform.rotate(
-          angle: angle, // 회전 각도
-          child: Image.asset('assets/cloud.png', width: width, height: height),
+      bottom: bottom,
+      child: AnimatedOpacity(
+        duration: Duration(milliseconds: 500),
+        opacity: clouds ? 1.0 : 0.0,
+        child: Transform.flip(
+          flipX: flip,
+          child: Image.asset('assets/cloud.png', width: width),
         ),
       ),
     );
@@ -50,122 +79,151 @@ class _MyappState extends State<Myapp> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.sizeOf(context);
-
-    // 화면 가로 길이
-    final screenWidth = screenSize.width;
-
-    // 화면 세로 길이
-    final screenHeight = screenSize.height;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xff381361), Color(0xff2B0A42)],
-              stops: [0.1, 0.85],
+              colors: [Color(0xff3F1464), Color(0xff260C38)],
+              stops: [0.1, 0.8],
             ),
           ),
+
           child: Stack(
             children: [
-              moon(),
-              cloud(height: 220, width: 270, top: 620, left: 150),
-              cloud(height: 220, width: 200, top: 620, left: -25, angle: 0.2),
-              cloud(height: 220, width: 260, top: 650, left: 210),
-              cloud(height: 240, width: 240, top: 680, left: -25, angle: 0.2),
-              cloud(height: 210, width: 250, top: 710, left: 130),
+              AnimatedOpacity(
+                duration: Duration(milliseconds: 500),
+                opacity: moon ? 1 : 0,
+                child: Image.asset('assets/moon.png', width: 130, height: 130),
+              ),
+
+              AnimatedOpacity(
+                duration: Duration(milliseconds: 400),
+                opacity: clouds ? 1 : 0,
+              ),
+
+              cloud(180, 80, width: 220, flip: true),
+              cloud(-20, 60, width: 220, flip: true),
+              cloud(230, 40, width: 220),
+              cloud(-10, 10, width: 220, flip: true),
+              cloud(170, -10, width: 220),
 
               Positioned(
-                top: 240,
                 left: 0,
                 right: 0,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // 로고: 기존 크기 유지
-                    Image.asset(
-                      'assets/Daily Tarot.png',
-                      width: 200,
-                      height: 100,
-                    ),
-
-                    // 장식을 위로 25만큼 이동
-                    Transform.translate(
-                      offset: Offset(0, -25),
-                      child: Image.asset(
-                        'assets/graphic.png',
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-
-                    // 안내 문구를 위로 40만큼 이동
-                    Transform.translate(
-                      offset: Offset(0, -40),
-                      child: Text(
-                        '운명을 엿볼 시간이에요.',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    ),
-                    SizedBox(height: 50),
-                  ],
+                top: 200,
+                child: AnimatedOpacity(
+                  duration: Duration(milliseconds: 400),
+                  opacity: DailyTarot ? 1 : 0,
+                  child: Image.asset(
+                    'assets/Daily Tarot.png',
+                    width: 70,
+                    height: 70,
+                  ),
                 ),
               ),
               Positioned(
-                top: 500,
-                child: Container(
-                  width: 160,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomCenter,
-                      colors: [Color(0xff926F8D), Color(0xff3B1568)],
-                      stops: [0.1, 0.8],
-                    ),
-                    borderRadius: BorderRadiusGeometry.circular(30),
+                left: 0,
+                right: 0,
+                top: 255,
+                child: AnimatedOpacity(
+                  duration: Duration(milliseconds: 200),
+                  opacity: graphic ? 1 : 0,
+                  child: Image.asset(
+                    'assets/graphic.png',
+                    width: 80,
+                    height: 80,
                   ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadiusGeometry.circular(30),
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text('시작하기', style: TextStyle(color: Colors.white,fontSize: 16)),
-                        SizedBox(width: 8),
-                        Transform.flip(
-                          flipX: true,
-                          child: SvgPicture.asset(
-                            'assets/icons/arrow.svg',
-                            height: 20,
-                            width: 20,
-                          ),
-                        ),
-                      ],
+                ),
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 330,
+                child: AnimatedOpacity(
+                  duration: Duration(milliseconds: 500),
+                  opacity: text1 ? 1 : 0,
+                  child: Text(
+                    '운명을 엿볼 시간이에요.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'NanumMyeongjo',
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
+              Positioned(left: 0, right: 0, top: 510, child: page()),
             ],
           ),
         ),
       ),
-      theme: ThemeData(fontFamily: nanum),
     );
   }
+
+  Widget page() {
+    final pages = [buttonPage(), const NamePage()];
+
+    return pages[pageIndex];
+  }
+
+  Widget buttonPage() => AnimatedOpacity(
+    duration: Duration(milliseconds: 1000),
+    opacity: better ? 1 : 0,
+    child: Center(
+      child: GestureDetector(
+        onTap: () {
+          pageIndex++;
+          setState(() {});
+        },
+        child: Container(
+          width: 180,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: .topLeft,
+              end: .bottomCenter,
+              colors: [Color(0xff84667A), Color(0xff3C1463)],
+              stops: [0.1, 0.8],
+            ),
+            borderRadius: BorderRadius.circular(28),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x993E244F),
+                blurRadius: 15,
+                offset: Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '시작하기',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'NanumMyeongjo',
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Transform.flip(
+                  flipX: true,
+                  child: SvgPicture.asset('assets/icons/arrow.svg', width: 23),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
