@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:test_1/pages/name_page.dart';
+import 'package:test_1/util.dart';
 
 void main() {
   runApp(Myapp());
@@ -96,10 +97,14 @@ class _MyappState extends State<Myapp> {
 
           child: Stack(
             children: [
-              AnimatedOpacity(
-                duration: Duration(milliseconds: 500),
-                opacity: moon ? 1 : 0,
-                child: Image.asset('assets/moon.png', width: 130, height: 130),
+              Positioned(
+                left: 0,
+                top: -20,
+                child: AnimatedOpacity(
+                  duration: Duration(milliseconds: 500),
+                  opacity: moon ? 1 : 0,
+                  child: Image.asset('assets/moon.png', width: 150, height: 170),
+                ),
               ),
 
               AnimatedOpacity(
@@ -107,60 +112,41 @@ class _MyappState extends State<Myapp> {
                 opacity: clouds ? 1 : 0,
               ),
 
-              cloud(180, 80, width: 220, flip: true),
-              cloud(-20, 60, width: 220, flip: true),
-              cloud(230, 40, width: 220),
-              cloud(-10, 10, width: 220, flip: true),
-              cloud(170, -10, width: 220),
+              cloud(180, 90, width: 220, ),
+              cloud(-40, 70, width: 230, flip: true),
+              cloud(230, 40, width: 240),
+              cloud(0, 10, width: 220, flip: true),
+              cloud(150, -15, width: 230),
 
               Positioned(
                 left: 0,
                 right: 0,
-                top: 200,
+                top: 245,
                 child: AnimatedOpacity(
                   duration: Duration(milliseconds: 400),
                   opacity: DailyTarot ? 1 : 0,
                   child: Image.asset(
                     'assets/Daily Tarot.png',
-                    width: 70,
-                    height: 70,
+                    width: 60,
+                    height: 60,
                   ),
                 ),
               ),
               Positioned(
                 left: 0,
                 right: 0,
-                top: 255,
+                top: 290,
                 child: AnimatedOpacity(
                   duration: Duration(milliseconds: 200),
                   opacity: graphic ? 1 : 0,
                   child: Image.asset(
                     'assets/graphic.png',
-                    width: 80,
-                    height: 80,
+                    width: 60,
+                    height: 60,
                   ),
                 ),
               ),
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 330,
-                child: AnimatedOpacity(
-                  duration: Duration(milliseconds: 500),
-                  opacity: text1 ? 1 : 0,
-                  child: Text(
-                    '운명을 엿볼 시간이에요.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'NanumMyeongjo',
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(left: 0, right: 0, top: 510, child: page()),
+              Positioned.fill(left: 0, right: 0, child: page()),
             ],
           ),
         ),
@@ -174,56 +160,79 @@ class _MyappState extends State<Myapp> {
     return pages[pageIndex];
   }
 
-  Widget buttonPage() => AnimatedOpacity(
-    duration: Duration(milliseconds: 1000),
-    opacity: better ? 1 : 0,
-    child: Center(
-      child: GestureDetector(
-        onTap: () {
-          pageIndex++;
-          setState(() {});
-        },
-        child: Container(
-          width: 180,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: .topLeft,
-              end: .bottomCenter,
-              colors: [Color(0xff84667A), Color(0xff3C1463)],
-              stops: [0.1, 0.8],
-            ),
-            borderRadius: BorderRadius.circular(28),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x993E244F),
-                blurRadius: 15,
-                offset: Offset(0, 8),
-              ),
-            ],
+  Widget buttonPage() => Stack(
+    children: [
+      Positioned(
+        left: 0, right: 0, top: 345,
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: 500),
+          opacity: text1 ? 1 : 0,
+          child: Text(
+            titles[0],
+            textAlign: TextAlign.center,
+            style: TextStyle(fontFamily: 'NanumMyeongjo', color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
           ),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 14),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '시작하기',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'NanumMyeongjo',
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+        ),
+      ),
+      Positioned(
+        left: 0,
+        right: 0,
+        bottom: 280,
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: 1000),
+          opacity: better ? 1 : 0,
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                pageIndex++;
+                setState(() {});
+              },
+              child: Container(
+                width: 200,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: .topLeft,
+                    end: .bottomCenter,
+                    colors: [Color(0xff84667A), Color(0xff3C1463)],
+                    stops: [0.1, 0.8],
+                  ),
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x993E244F),
+                      blurRadius: 15,
+                      offset: Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 14),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '시작하기',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'NanumMyeongjo',
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Transform.flip(
+                        flipX: true,
+                        child: SvgPicture.asset('assets/icons/arrow.svg', width: 23),
+                      ),
+                    ],
                   ),
                 ),
-                Transform.flip(
-                  flipX: true,
-                  child: SvgPicture.asset('assets/icons/arrow.svg', width: 23),
-                ),
-              ],
+              ),
+
             ),
           ),
         ),
       ),
-    ),
+    ],
   );
 }
+
