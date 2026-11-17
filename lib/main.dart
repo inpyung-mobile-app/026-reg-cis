@@ -116,12 +116,12 @@ class _MyappState extends State<Myapp> {
               cloud(-40, 70, width: 230, flip: true),
               cloud(230, 40, width: 240),
               cloud(0, 10, width: 220, flip: true),
-              cloud(150, -15, width: 230),
+              cloud(150, -20, width: 240),
 
               Positioned(
                 left: 0,
                 right: 0,
-                top: 245,
+                top: pageIndex == 0? 245: 150,
                 child: AnimatedOpacity(
                   duration: Duration(milliseconds: 400),
                   opacity: DailyTarot ? 1 : 0,
@@ -135,7 +135,7 @@ class _MyappState extends State<Myapp> {
               Positioned(
                 left: 0,
                 right: 0,
-                top: 290,
+                top: pageIndex == 0? 290: 195,
                 child: AnimatedOpacity(
                   duration: Duration(milliseconds: 200),
                   opacity: graphic ? 1 : 0,
