@@ -4,5 +4,9 @@
         <item name="android:windowBackground">@drawable/launch_background</item>
         <item name="android:windowSplashScreenBackground">#3C1363</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/daily_tarot_icon</item>
+        <!-- 상태바/내비게이션 바를 투명하게 → 앱 배경이 화면 끝까지 보이게 -->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 </resources>
