@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:test_1/pages/B_home.dart';
 
 // 정보 확인 화면
 class CheckPage extends StatelessWidget {
@@ -86,11 +87,11 @@ class CheckPage extends StatelessWidget {
             top: 624,
             child: Center(
               child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => Scaffold()), // 홈 화면 (빈 화면)
-                  );
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => BHome()),
+                    );
                 },
                 child: Container(
                   width: 196,
