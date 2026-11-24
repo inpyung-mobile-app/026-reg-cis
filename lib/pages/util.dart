@@ -1,5 +1,23 @@
 // 공통적으로 쓰이는 변수 또는 함수 모음
 // 자료형이 없을 시 유추를 통해 자료형을 할당
+import 'package:flutter/material.dart';
+
+Widget bCloud(double left,double top, {bool flipY = false,bool flip = false, double width = 220,double opacity = 1}) {
+  return Positioned(
+    left: left,
+    top: top,
+    child:Opacity(
+      opacity: opacity,
+      child: Transform.flip(
+        flipX: flip,
+        flipY: flipY,
+        child: Image.asset('assets/cloud.png',width: width,),
+      ),
+    )
+  );
+}
+
+
 const titles = [
   '운명을 엿볼 시간이에요.',
   '이름을 입력해주세요.',
