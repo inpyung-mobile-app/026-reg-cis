@@ -187,7 +187,7 @@ class BHome extends StatelessWidget {
           )]),
         ),
       ),
-      SizedBox(height: 80),
+      SizedBox(height: 100),
     ],
   );
 
@@ -199,7 +199,7 @@ class BHome extends StatelessWidget {
         bCloud(-20, 20, flipY: true, width: 220),
         bCloud(240, -10, flipY: true, width: 220),
         bCloud(0, -20, flipY: true, flip: true, width: 200),
-        bCloud(170, -20, flipY: true, flip: true, width: 220),
+        bCloud(170, -50, flipY: true, flip: true, width: 220),
       ],
     ),
   );
