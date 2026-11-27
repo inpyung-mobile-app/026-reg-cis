@@ -34,7 +34,7 @@ class MoonAddPage extends StatelessWidget {
             bCloud(240, 740, width: 220),
             bCloud(0, 780, flip: true, width: 200),
             bCloud(170, 800, flip: true, width: 220),
-            back(),
+            back(context),
             title(),
             have(),
             list(),
@@ -44,13 +44,16 @@ class MoonAddPage extends StatelessWidget {
     );
   }
 
-  Widget back() =>
+  Widget back(BuildContext context) =>
       Positioned(
         left: 20,
         top: 20,
-        child: SvgPicture.asset('assets/icons/arrow.svg', width: 28),
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => Navigator.pop(context),
+          child: Padding(padding: EdgeInsets.all(10), child: SvgPicture.asset('assets/icons/arrow.svg', width: 28)),
+        ),
       );
-
 
   Widget title() =>
       Positioned(
@@ -87,12 +90,13 @@ class MoonAddPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/moon.png', width: 40),
+                Container(decoration: glow,width: 40,height: 40, child: Image.asset('assets/moon.png')),
                 SizedBox(width: 5),
-                Text('10', style: TextStyle(fontFamily: 'NanumMyeongjo',
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),),
+                ValueListenableBuilder<int>(
+                    valueListenable: moon,
+                    builder: (_, v, _) => Text('$v',style: TextStyle(fontFamily: 'NanumMyeongjo',
+                    color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold),)
+                )
               ],
             )
           ],
@@ -104,38 +108,67 @@ class MoonAddPage extends StatelessWidget {
    width: 50,
    height: 50,
    child: Stack(
+     clipBehavior: Clip.none,
      children: [
-       Positioned(left: n == 1 ? 6 : 1, top: n == 1 ? 6 : 10, child: Image.asset('assets/moon.png',width: 40)),
-       if (n >= 2) Positioned(left: 15, top:  5, child: Image.asset('assets/moon.png',width: 35,)),
-       if (n >= 3) Positioned(left: 30, top: 30,child: Image.asset('assets/moon.png',width: 15)),
+       if (n >= 2) Positioned(left: 15, top:  5, child: Container(decoration: glow,width: 35,height: 35,
+           child: Image.asset('assets/moon.png'))),
+       if (n >= 3) Positioned(left: 30, top: 30,child: Container(decoration:glow,width: 15,height: 15,
+           child: Image.asset('assets/moon.png',width: 15))),
+       Positioned(left: n == 1 ? 6 : 1, top: n == 1 ? 6 : 10, child: Container(decoration: glow,width: 40,height: 40,
+           child: Image.asset('assets/moon.png'))),
      ],
    ),
  );
 
- Widget item (int n, String name, String sale, String price) =>
- Container(
-   height: 63,
-   padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
-   decoration: BoxDecoration(
-     border: Border(bottom: BorderSide(color: Colors.white24)),
-   ),
-   child: Row(
-     children: [
-       moons(n),
-       SizedBox(width: 10),
-       Column(
-         mainAxisAlignment: MainAxisAlignment.center,
-         crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
-           Text(name , style: TextStyle(fontFamily:'NanumMyeongjo',color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold)),
-           Text(sale, style: TextStyle(fontFamily: 'NanumMyeongjo',color: Color(0xffFFD700),fontSize: 12,fontWeight: FontWeight.bold),)
-         ],
+ void buy(BuildContext c,int amout,String price) async {
+   final ok = await showDialog<bool>(
+     context: c,
+     builder: (d) => AlertDialog(
+       title: Text('상품을 구매하시겠습니까?'
        ),
-       Spacer(),
-       Text(price,style: TextStyle(fontFamily: 'NanumMyeongjo',color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),)
-     ],
-   ),
- );
+       content: Text('달 $amout개\n$price'),
+       actions: [
+         TextButton(onPressed: () => Navigator.pop(d,false),child:Text('아니요')),
+         TextButton(onPressed: () => Navigator.pop(d,true),child: Text('네'),)
+       ]
+     )
+   );
+   if (ok != true) return;
+   saveMoon(moon.value + amout);
+   toast('달 $amout개 구매가 완료되었습니다.');
+ }
+
+ Widget item (int n,int amount,String sale,String price,{bool last = false}) =>
+Builder(builder: (c) => GestureDetector(behavior: HitTestBehavior.opaque,
+onTap: () => buy(c, amount, price),
+  child: Container(
+    height: 63,
+    padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
+    decoration: BoxDecoration(
+      border: last ? null : Border(bottom: BorderSide(color: Colors.white24)),
+    ),
+    child: Row(
+      children: [
+        moons(n),
+        SizedBox(width: 10,),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('달 $amount개',style: TextStyle(fontFamily: 'NanumMyeongjo',color: Colors.white,fontSize: 18,
+            fontWeight: FontWeight.bold),),
+            Text(sale,style: TextStyle(fontFamily: 'NanumMyeongjo',color: Color(0xffFFD700),fontSize: 12,
+            fontWeight: FontWeight.bold),)
+          ],
+        ),
+        Spacer(),
+        Text(price,style: TextStyle(fontFamily: 'NanumMyeongjo',color: Colors.white,fontSize: 18,
+        fontWeight: FontWeight.bold),)
+      ],
+    ),
+  ),
+  )
+);
 
   Widget list() =>
       Positioned(
@@ -144,12 +177,12 @@ class MoonAddPage extends StatelessWidget {
         top: 270,
         child: Column(
           children: [
-            item(1,'달 25개', '약 750원 할인', '5,500원'),
-            item(1,'달 50개', '약 2,600원 할인', '9,900원'),
-            item(2,'달 75개', '약 4,750원 할인', '14,000원'),
-            item(2,'달 100개', '약 8,000원 할인', '17,000원'),
-            item(3,'달 200개', '약 17,000원 할인', '33,000원'),
-            item(3,'달 350개', '약 32,500원 할인', '55,000원'),
+            item(1,25, '약 750원 할인', '5,500원'),
+            item(1,50, '약 2,600원 할인', '9,900원'),
+            item(2,75, '약 4,750원 할인', '14,000원'),
+            item(2,100, '약 8,000원 할인', '17,000원'),
+            item(3,200, '약 17,000원 할인', '33,000원'),
+            item(3,350, '약 32,500원 할인', '55,000원',last: true),
           ],
         ),
       );

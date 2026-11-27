@@ -10,9 +10,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:test_1/pages/spawn_time_page.dart';
 import 'package:test_1/pages/check_page.dart';
 
-void main() {
-  // 앱을 화면 끝까지(상태바·내비게이션 바 뒤까지) 그리기 → 프로토타입과 같은 화면 비율
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await loadMoon();
+  // 앱을 화면 끝까지(상태바·내비게이션 바 뒤까지) 그리기 → 프로토타입과 같은 화면 비율
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(Myapp());
 }

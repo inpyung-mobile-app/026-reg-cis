@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:test_1/pages/moon_add_page.dart';
 import 'package:test_1/pages/util.dart';
+import 'package:test_1/pages/soul_page.dart';
 
 class BHome extends StatelessWidget {
   const BHome({super.key});
@@ -29,18 +31,23 @@ class BHome extends StatelessWidget {
                 child: Transform.flip(flipY: true, child: clouds()),
               ),
               content(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Positioned(
-                    right: 50,
-                    top: 10,
-                    child: Image.asset('assets/moon.png',width: 50,),// 달
+              Positioned(
+                right: 15,
+                top: 40,
+                child: GestureDetector(
+                  onTap: () => Navigator.push(context,MaterialPageRoute(builder: (_) => SoulPage())),
+                  child: Row(
+                    children: [
+                      Container(decoration: glow,width: 36,height: 36,
+                      child: Image.asset('assets/moon.png'),),
+                      SizedBox(width: 4),
+                      ValueListenableBuilder(valueListenable: moon,
+                          builder:(_, v, _) => Text('$v',style: TextStyle(fontFamily: 'NotoSansKR',
+                          fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),) )
+                    ],
                   ),
-                  Text('10',style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Colors.white),),
-                  SizedBox(width: 15,)
-                ],
-              ),
+                ),
+              )
             ],
           ),
         ),
@@ -102,7 +109,7 @@ class BHome extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '운명적인 나만의 데일리 카드!\n매일 하루를 카운셀링 받드세요.',
+                      '운명적인 나만의 데일리 카드!\n매일 하루를 카운셀링 받으세요.',
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: Colors.white,
@@ -147,7 +154,7 @@ class BHome extends StatelessWidget {
             tarotCard(
               'assets/fruit_tarot.png',
               '열매 타로',
-              '지금은 생각하고있는 일은\n어떤 결과로 이어질까?',
+              '지금은 생각하고 있는 일은\n어떤 결과로 이어질까?',
             ),
           ],
         ),
@@ -179,7 +186,7 @@ class BHome extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('당신만을 위한 상담',style: TextStyle(color: Colors.white,fontFamily: 'NanumMyeongjo',fontWeight: FontWeight.bold,fontSize: 18),),
+                Text('당신을 위한 상담',style: TextStyle(color: Colors.white,fontFamily: 'NanumMyeongjo',fontWeight: FontWeight.bold,fontSize: 18),),
                 Text("당신만을 위해 모인 '데일리마스터'와\n직접 이야기를 나누어 보세요.",style: TextStyle(color: Colors.white,
                 fontFamily: 'NanumMyeongjo',fontSize: 15),)
               ],
